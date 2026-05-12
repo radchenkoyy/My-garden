@@ -1,4 +1,98 @@
 <!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Мой сад</title>
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+    }
+
+    header {
+      background: #2e7d32;
+      color: white;
+      text-align: center;
+      padding: 16px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    #map {
+      width: 100%;
+      height: calc(100vh - 60px);
+    }
+
+    .popup {
+      width: 220px;
+    }
+
+    .popup img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .info {
+      margin-bottom: 6px;
+    }
+
+    .link {
+      display: inline-block;
+      margin-top: 10px;
+      color: #2e7d32;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  🌳 Мой сад
+</header>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+  // Создание карты
+
+  const map = L.map('map').setView([55.751244, 37.618423], 18);
+
+  // Подключение карты
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap'
+  }).addTo(map);
+
+  // База деревьев
+
+  const trees = [
+
+    {
       name: '🍎 Яблоня Антоновка',
       lat: 55.751244,
       lng: 37.618423,
@@ -13,56 +107,76 @@
 
     {
       name: '🍐 Груша Чижовская',
-      lat: 55.751320,
-      lng: 37.618550,
+      lat: 55.751330,
+      lng: 37.618560,
       year: '2024',
       rootstock: 'Айва',
       watering: '2 раза в неделю',
       pruning: 'апрель',
-      description: 'Неприхотливый летний сорт груши.',
+      description: 'Популярный летний сорт груши.',
       image: 'https://upload.wikimedia.org/wikipedia/commons/c/cf/Pears.jpg',
       page: 'https://ru.wikipedia.org/wiki/Груша'
     },
 
     {
       name: '🍒 Вишня Молодежная',
-      lat: 55.751180,
-      lng: 37.618300,
+      lat: 55.751150,
+      lng: 37.618290,
       year: '2023',
       rootstock: '—',
       watering: 'умеренный',
       pruning: 'февраль',
-      description: 'Компактная и урожайная вишня.',
+      description: 'Компактный урожайный сорт.',
       image: 'https://upload.wikimedia.org/wikipedia/commons/b/bb/Cherry_Stella444.jpg',
       page: 'https://ru.wikipedia.org/wiki/Вишня'
     }
+
   ];
 
-  // Добавление деревьев на карту
+  // Вывод деревьев на карту
+
   trees.forEach(tree => {
-    const popupContent = `
-      <div class="tree-popup">
+
+    const popup = `
+      <div class="popup">
+
         <img src="${tree.image}" alt="${tree.name}">
 
-        <div class="tree-title">${tree.name}</div>
+        <div class="title">${tree.name}</div>
 
-        <div class="tree-info"><b>Год посадки:</b> ${tree.year}</div>
-        <div class="tree-info"><b>Подвой:</b> ${tree.rootstock}</div>
-        <div class="tree-info"><b>Полив:</b> ${tree.watering}</div>
-        <div class="tree-info"><b>Обрезка:</b> ${tree.pruning}</div>
+        <div class="info">
+          <b>Год посадки:</b> ${tree.year}
+        </div>
 
-        <div class="tree-info">${tree.description}</div>
+        <div class="info">
+          <b>Подвой:</b> ${tree.rootstock}
+        </div>
 
-        <a class="tree-link" href="${tree.page}" target="_blank">
-          Подробнее о сорте
+        <div class="info">
+          <b>Полив:</b> ${tree.watering}
+        </div>
+
+        <div class="info">
+          <b>Обрезка:</b> ${tree.pruning}
+        </div>
+
+        <div class="info">
+          ${tree.description}
+        </div>
+
+        <a class="link" href="${tree.page}" target="_blank">
+          Подробнее
         </a>
+
       </div>
     `;
 
     L.marker([tree.lat, tree.lng])
       .addTo(map)
-      .bindPopup(popupContent);
+      .bindPopup(popup);
+
   });
+
 </script>
 
 </body>
